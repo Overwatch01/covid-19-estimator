@@ -48,13 +48,17 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     if (reqParams.hasXML) {
         res.set('Content-Type', 'application/xml');
         res.status(200).send(
-            builder.buildObject({ ['COVID-ESTIMATOR']: result })
+            builder.buildObject({ ['COVID-ESTIMATOR']: {
+                data: req.body.data,
+                impact: result.impact,
+                severeImpact: result.severeImpact
+            }})
         );
     } else {
         res.status(200).send({
-            success: 'true',
-            message: 'todos retrieved',
-            request: result
+            data: req.body.data,
+            impact: result.impact,
+            severeImpact: result.severeImpact
         })
     }
 
@@ -67,7 +71,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     }
     const elapsedHrTime = process.hrtime(startHrTime);
     const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-    log.info(`${Date.now()} \t\t${requestTitle}  \t\t\tdone in ${elapsedTimeInMs} miliseconds`);
+    log.info(`${Date.now()} \t\t${requestTitle}  \t\t\t\tdone in ${elapsedTimeInMs} miliseconds`);
 });
 
 app.post('/api/v1/on-covid-19/xml', (req, res) => {
