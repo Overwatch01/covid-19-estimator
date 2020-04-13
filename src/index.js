@@ -94,6 +94,5 @@ app.get('/api/v1/on-covid-19/logs', (req, res) => {
 const PORT = process.env.PORT || 1337;
 
 app.listen(PORT, () => {
-  console.log(process.env.BACKEND);
   console.log(`server running on port ${PORT}`);
 });
