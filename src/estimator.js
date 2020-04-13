@@ -115,9 +115,9 @@ const generateSevereImpactEstimation = (data) => {
   return severeImpact;
 };
 
-const covid19ImpactEstimator = (response) => {
-  const impact = generateImpactEstimation(response.data);
-  const severeImpact = generateSevereImpactEstimation(response.data);
+const covid19ImpactEstimator = (data) => {
+  const impact = generateImpactEstimation(data);
+  const severeImpact = generateSevereImpactEstimation(data);
   return {
     impact,
     severeImpact
