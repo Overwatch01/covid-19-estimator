@@ -23,7 +23,7 @@ app.post('/api/v1/on-covid-19', (req, res) => {
         request: result
     })
 });
-const PORT = 4000;
+const PORT = process.env.PORT || 1337;;
 
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`)
