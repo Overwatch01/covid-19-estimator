@@ -9,6 +9,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get('/', function (req, res) {
+    console.log('Hello World')
+    res.send(JSON.stringify({ Hello: 'World'}));
+   });
+
 // get all todos
 app.post('/api/v1/on-covid-19', (req, res) => {
     const result = covid19ImpactEstimator(req.body)
