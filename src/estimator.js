@@ -29,6 +29,14 @@ const generateCasesForICUByRequestedTime = (infectionsByRequestedTime) => {
 };
 // #endregion
 
+// #region generateHospitalBedsByRequestedTime
+const generateHospitalBedsByRequestedTime = (totalHospitalBeds, severeCasesByRequestedTime) => {
+  const bedAvailability = (35 / 100) * totalHospitalBeds;
+  const result = Math.trunc(bedAvailability - severeCasesByRequestedTime);
+  return result;
+};
+// #endregion
+
 // #region generateCasesForVentilatorsByRequestedTime
 const generateCasesForVentilatorsByRequestedTime = (infectionsByRequestedTime) => {
   const result = Math.trunc((2 / 100) * infectionsByRequestedTime);
@@ -63,12 +71,16 @@ const generateDollarsInFlight = (
 };
 // #endregion
 
+// #region generateImpactEstimation
 const generateImpactEstimation = (data) => {
   const currentlyInfected = data.reportedCases * 10;
   const infectionsByRequestedTime = generateInfectionByRequestedTime(
     currentlyInfected, data.periodType, data.timeToElapse
   );
   const severeCasesByRequestedTime = generateCasesByRequestedTime(infectionsByRequestedTime);
+  const hospitalBedsByRequestedTime = generateHospitalBedsByRequestedTime(
+    data.totalHospitalBeds, severeCasesByRequestedTime
+  );
   const casesForICUByRequestedTime = generateCasesForICUByRequestedTime(infectionsByRequestedTime);
   const casesForVentilatorsByRequestedTime = generateCasesForVentilatorsByRequestedTime(
     infectionsByRequestedTime
@@ -81,20 +93,25 @@ const generateImpactEstimation = (data) => {
     currentlyInfected,
     infectionsByRequestedTime,
     severeCasesByRequestedTime,
-    hospitalBedsByRequestedTime: null,
+    hospitalBedsByRequestedTime,
     casesForICUByRequestedTime,
     casesForVentilatorsByRequestedTime,
     dollarsInFlight
   };
   return impact;
 };
+// #endregion
 
+// #region generateSevereImpactEstimation
 const generateSevereImpactEstimation = (data) => {
   const currentlyInfected = data.reportedCases * 50;
   const infectionsByRequestedTime = generateInfectionByRequestedTime(
     currentlyInfected, data.periodType, data.timeToElapse
   );
   const severeCasesByRequestedTime = generateCasesByRequestedTime(infectionsByRequestedTime);
+  const hospitalBedsByRequestedTime = generateHospitalBedsByRequestedTime(
+    data.totalHospitalBeds, severeCasesByRequestedTime
+  );
   const casesForICUByRequestedTime = generateCasesForICUByRequestedTime(infectionsByRequestedTime);
   const casesForVentilatorsByRequestedTime = generateCasesForVentilatorsByRequestedTime(
     infectionsByRequestedTime
@@ -107,13 +124,14 @@ const generateSevereImpactEstimation = (data) => {
     currentlyInfected,
     infectionsByRequestedTime,
     severeCasesByRequestedTime,
-    hospitalBedsByRequestedTime: null,
+    hospitalBedsByRequestedTime,
     casesForICUByRequestedTime,
     casesForVentilatorsByRequestedTime,
     dollarsInFlight
   };
   return severeImpact;
 };
+// #endregion
 
 const covid19ImpactEstimator = (data) => {
   const impact = generateImpactEstimation(data);
