@@ -84,8 +84,8 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     });
   }
   const elapsedHrTime = process.hrtime(startHrTime);
-  const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-  logMessage = `${httpAction} \t\t ${requestTitle} \t\t${200} \t\t ${elapsedTimeInMs}ms`;
+  const elapsedTimeInMs = Math.trunc((elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6));
+  logMessage = `${httpAction} \t\t ${requestTitle} \t\t${200} \t\t ${elapsedTimeInMs}0ms`;
   addToLog(logMessage);
 });
 
@@ -112,8 +112,8 @@ app.get('/api/v1/on-covid-19/logs', (req, res) => {
     res.status(200).send(data);
   });
   const elapsedHrTime = process.hrtime(startHrTime);
-  const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-  logMessage = `${httpAction} \t\t ${requestTitle} \t\t${200} \t\t ${elapsedTimeInMs}ms`;
+  const elapsedTimeInMs = Math.trunc((elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6));
+  logMessage = `${httpAction} \t\t ${requestTitle} \t\t${200} \t\t ${elapsedTimeInMs}0ms`;
   addToLog(logMessage);
 });
 
