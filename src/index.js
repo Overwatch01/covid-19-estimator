@@ -68,7 +68,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
   }
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-  log.info(`${httpAction} \t\t${Date.now()} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  log.info(`${httpAction} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
 });
 
 app.post('/api/v1/on-covid-19/xml', (req, res) => {
@@ -89,12 +89,15 @@ app.get('/api/v1/on-covid-19/logs', (req, res) => {
   const startHrTime = process.hrtime();
   fs.readFile('project.log', 'utf8', (err, data) => {
     if (err) throw err;
+
+    const result = data.replace(/INFO/g, '');
     res.set('Content-Type', 'text/plain');
-    res.status(200).send(data);
+    res.status(200).send(result);
   });
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-  log.info(`${httpAction} \t\t${Date.now()} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  // log.info(`${httpAction} \t\t${Date.now()} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  log.info(`${httpAction} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
 });
 
 const PORT = process.env.PORT || 1337;
