@@ -78,7 +78,7 @@ app.post('/api/v1/on-covid-19/json', (req, res) => {
   res.redirect(307, '/api/v1/on-covid-19?title=json');
 });
 
-app.get('/api/v1/on-covid-19/logs', (req, res) => {
+app.post('/api/v1/on-covid-19/logs', (req, res) => {
   fs.readFile('project.log', 'utf8', (err, data) => {
     if (err) throw err;
     res.set('Content-Type', 'text/plain');
