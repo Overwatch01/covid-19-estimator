@@ -4,11 +4,6 @@ import xmlparser from 'express-xml-bodyparser';
 import xml from 'xml2js';
 import covid19ImpactEstimator from './estimator';
 
-require('dotenv').config();
-
-// const log = require('simple-node-logger').createSimpleFileLogger('project.log');
-const fs = require('fs');
-
 // Set up the express app
 const app = express();
 
@@ -16,6 +11,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+require('dotenv').config();
+const fs = require('fs');
 
 // XML Parser configurations, https://github.com/Leonidas-from-XIV/node-xml2js#options
 const xmlOptions = {
@@ -32,13 +29,14 @@ const builder = new xml.Builder({
   renderOpts: { pretty: false }
 });
 
-let requestTitle;
+// Variables
+let requestUrl;
 let httpAction;
-let initialLog = true;
 let logMessage;
+let initialLog = true;
 const fileName = 'logfile.txt';
 
-
+// #region addToLog
 const addToLog = (text) => {
   if (initialLog) {
     fs.writeFile(fileName, text, (err) => {
@@ -51,7 +49,9 @@ const addToLog = (text) => {
     });
   }
 };
+// #endregion
 
+// #region /api/v1/on-covid-19
 app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
   const startHrTime = process.hrtime();
   const reqParams = req.query;
@@ -76,7 +76,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     });
   } else {
     httpAction = 'POST';
-    requestTitle = '/api/v1/on-covid-19';
+    requestUrl = '/api/v1/on-covid-19';
     res.status(200).send({
       data: req.body,
       impact: result.impact,
@@ -85,37 +85,43 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
   }
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = Math.trunc((elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6));
-  logMessage = `${httpAction} \t\t ${requestTitle} \t\t${200} \t\t ${elapsedTimeInMs}0ms`;
+  logMessage = `${httpAction} \t\t ${requestUrl} \t\t${200} \t\t ${elapsedTimeInMs}0ms`;
   addToLog(logMessage);
 });
+// #endregion
 
+// #region /api/v1/on-covid-19/xml
 app.post('/api/v1/on-covid-19/xml', (req, res) => {
-  httpAction = 'GET';
-  requestTitle = '/api/v1/on-covid-19/xml';
+  httpAction = 'POST';
+  requestUrl = '/api/v1/on-covid-19/xml';
   res.redirect(307, '/api/v1/on-covid-19?hasXML=true');
 });
+// #endregion
 
+// #region /api/v1/on-covid-19/json
 app.post('/api/v1/on-covid-19/json', (req, res) => {
-  httpAction = 'GET';
-  requestTitle = '/api/v1/on-covid-19/json';
+  httpAction = 'POST';
+  requestUrl = '/api/v1/on-covid-19/json';
   res.redirect(307, '/api/v1/on-covid-19?hasJson=true');
 });
+// #endregion
 
+// #region /api/v1/on-covid-19/logs
 app.get('/api/v1/on-covid-19/logs', (req, res) => {
   httpAction = 'GET';
-  requestTitle = '/api/v1/on-covid-19/logs';
+  requestUrl = '/api/v1/on-covid-19/logs';
   const startHrTime = process.hrtime();
   fs.readFile(fileName, 'utf8', (err, data) => {
     if (err) throw err;
-
     res.set('Content-Type', 'text/plain');
     res.status(200).send(data);
   });
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = Math.trunc((elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6));
-  logMessage = `${httpAction} \t\t ${requestTitle} \t\t${200} \t\t ${elapsedTimeInMs}0ms`;
+  logMessage = `${httpAction} \t\t ${requestUrl} \t\t${200} \t\t ${elapsedTimeInMs}0ms`;
   addToLog(logMessage);
 });
+// #endregion
 
 const PORT = process.env.PORT || 1337;
 
