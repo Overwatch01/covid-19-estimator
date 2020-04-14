@@ -76,7 +76,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     });
   } else {
     httpAction = 'POST';
-    requestTitle = 'on-covid-19';
+    requestTitle = '/api/v1/on-covid-19';
     res.status(200).send({
       data: req.body,
       impact: result.impact,
@@ -91,19 +91,19 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
 
 app.post('/api/v1/on-covid-19/xml', (req, res) => {
   httpAction = 'GET';
-  requestTitle = 'on-covid-19/xml';
+  requestTitle = '/api/v1/on-covid-19/xml';
   res.redirect(307, '/api/v1/on-covid-19?hasXML=true');
 });
 
 app.post('/api/v1/on-covid-19/json', (req, res) => {
   httpAction = 'GET';
-  requestTitle = 'on-covid-19/json';
+  requestTitle = '/api/v1/on-covid-19/json';
   res.redirect(307, '/api/v1/on-covid-19?hasJson=true');
 });
 
 app.get('/api/v1/on-covid-19/logs', (req, res) => {
   httpAction = 'GET';
-  requestTitle = 'on-covid-19/logs';
+  requestTitle = '/api/v1/on-covid-19/logs';
   const startHrTime = process.hrtime();
   fs.readFile(fileName, 'utf8', (err, data) => {
     if (err) throw err;
