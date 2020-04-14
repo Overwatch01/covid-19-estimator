@@ -68,7 +68,8 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
   }
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-  log.info(`${httpAction} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  console.log(`${httpAction} \t\t${Date.now()} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  log.info('POST\t\ton-covid-19/logs\t\t200\t\t30ms');
 });
 
 app.post('/api/v1/on-covid-19/xml', (req, res) => {
@@ -97,7 +98,8 @@ app.get('/api/v1/on-covid-19/logs', (req, res) => {
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
   // log.info(`${httpAction} \t\t${Date.now()} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
-  log.info(`${httpAction} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  console.log(`${httpAction} \t\t${Date.now()} \t\t${requestTitle} \t\t${elapsedTimeInMs}ms`);
+  log.info('POST\t\ton-covid-19/logs\t\t200\t\t30ms');
 });
 
 const PORT = process.env.PORT || 1337;
