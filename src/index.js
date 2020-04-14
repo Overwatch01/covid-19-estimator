@@ -79,11 +79,15 @@ app.post('/api/v1/on-covid-19/json', (req, res) => {
 });
 
 app.get('/api/v1/on-covid-19/logs', (req, res) => {
+  const startHrTime = process.hrtime();
   fs.readFile('project.log', 'utf8', (err, data) => {
     if (err) throw err;
     res.set('Content-Type', 'text/plain');
     res.status(200).send(data);
   });
+  const elapsedHrTime = process.hrtime(startHrTime);
+  const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
+  log.info(`${Date.now()} \t\ton-covid-19/logs \t\tdone in ${elapsedTimeInMs} miliseconds`);
 });
 
 const PORT = process.env.PORT || 1337;
