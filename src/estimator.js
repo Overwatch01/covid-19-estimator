@@ -65,7 +65,7 @@ const generateDollarsInFlight = (
   }
 
   const result = Math.trunc(
-    (infectionsByRequestedTime * avgDailyIncomePopulation * avgDailyIncomeInUSD * daysFactors)
+    ((infectionsByRequestedTime * avgDailyIncomePopulation * avgDailyIncomeInUSD) / daysFactors)
   );
   return result;
 };
