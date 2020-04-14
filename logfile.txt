@@ -1,0 +1,1 @@
+POST 		 /api/v1/on-covid-19/xml 		200 		 60ms
