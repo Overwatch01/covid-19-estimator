@@ -50,7 +50,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     res.status(200).send(
       builder.buildObject({
         'COVID-ESTIMATOR': {
-          data: req.body.data,
+          data: req.body,
           impact: result.impact,
           severeImpact: result.severeImpact
         }
@@ -58,7 +58,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
     );
   } else {
     res.status(200).send({
-      data: req.body.data,
+      data: req.body,
       impact: result.impact,
       severeImpact: result.severeImpact
     });
