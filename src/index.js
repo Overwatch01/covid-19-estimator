@@ -1,7 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-
 import xmlparser from 'express-xml-bodyparser';
 import xml from 'xml2js';
 import covid19ImpactEstimator from './estimator';
@@ -34,11 +33,6 @@ const builder = new xml.Builder({
   renderOpts: { pretty: false }
 });
 
-app.get('/', (req, res) => {
-  res.send(JSON.stringify({ Hello: 'World' }));
-});
-
-// get all todos
 app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
   const startHrTime = process.hrtime();
   const reqParams = req.query;
@@ -73,7 +67,7 @@ app.post('/api/v1/on-covid-19', xmlparser(xmlOptions), (req, res) => {
   }
   const elapsedHrTime = process.hrtime(startHrTime);
   const elapsedTimeInMs = (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6).toFixed(2);
-  log.info(`${Date.now()} \t\t${requestTitle}  \t\t\t\tdone in ${elapsedTimeInMs} miliseconds`);
+  log.info(`${Date.now()} \t\t${requestTitle}  \t\tdone in ${elapsedTimeInMs} miliseconds`);
 });
 
 app.post('/api/v1/on-covid-19/xml', (req, res) => {
@@ -87,6 +81,7 @@ app.post('/api/v1/on-covid-19/json', (req, res) => {
 app.get('/api/v1/on-covid-19/logs', (req, res) => {
   fs.readFile('project.log', 'utf8', (err, data) => {
     if (err) throw err;
+    res.set('Content-Type', 'text/plain');
     res.status(200).send(data);
   });
 });
